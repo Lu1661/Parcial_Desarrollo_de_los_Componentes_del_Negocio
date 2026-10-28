@@ -1,0 +1,213 @@
+{
+  "info": {
+    "_postman_id": "b1b87a8b-3712-4f3b-9e8c-8519cfa8c9e0",
+    "name": "API Gestión de Solicitudes de Soporte Técnico - Zegel",
+    "description": "Colección completa de pruebas para la evaluación parcial de Desarrollo de Componentes del Negocio.\nIncluye casos de éxito para todo el CRUD y casos de control de errores (validaciones, 404 y reglas de negocio).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Casos de Éxito (CRUD)",
+      "item": [
+        {
+          "name": "1.1 Listar todas las solicitudes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.2 Crear una nueva solicitud",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Falla al conectar a la VPN corporativa\",\n  \"descripcion\": \"El usuario de contabilidad no puede autenticarse en el servidor tras la actualización.\",\n  \"prioridad\": \"ALTA\",\n  \"clienteNombre\": \"Carlos Mendoza\",\n  \"clienteEmail\": \"carlos.mendoza@empresa.com\",\n  \"clienteTelefono\": \"+51 987654321\",\n  \"clienteEmpresa\": \"Tech Solutions S.A.C.\",\n  \"clienteDepartamento\": \"Contabilidad\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.3 Consultar solicitud por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.4 Filtrar solicitudes por estado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes?estado=ASIGNADO",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes"],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "ASIGNADO"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.5 Actualizar datos de solicitud (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Falla al conectar a la VPN - Actualizado y reintentado\",\n  \"descripcion\": \"Se verificaron credenciales, se procede a cambiar la prioridad a URGENTE.\",\n  \"prioridad\": \"URGENTE\",\n  \"estado\": \"EN_PROCESO\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.6 Asignar técnico especialista (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ing. Ana Paredes\",\n  \"email\": \"ana.paredes@soporte.com\",\n  \"telefono\": \"+51 912345678\",\n  \"especialidad\": \"Seguridad Perimetral y Redes\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes/2/asignar-tecnico",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes", "2", "asignar-tecnico"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.7 Eliminar solicitud (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes/2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes", "2"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Casos de Error y Validaciones (Control de Excepciones)",
+      "item": [
+        {
+          "name": "2.1 Error de validación al crear (400 Bad Request)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Err\",\n  \"descripcion\": \"Corta\",\n  \"prioridad\": null,\n  \"clienteNombre\": \"\",\n  \"clienteEmail\": \"correo-invalido\",\n  \"clienteTelefono\": \"\",\n  \"clienteEmpresa\": \"\",\n  \"clienteDepartamento\": \"\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.2 Recurso no encontrado (404 Not Found)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes/999",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes", "999"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.3 Regla de negocio infringida - Eliminar en atención (400 Bad Request)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/solicitudes/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "solicitudes", "1"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
+
